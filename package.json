@@ -1,0 +1,27 @@
+{
+  "name": "react-mixin-decorator",
+  "version": "1.0.1",
+  "description": "Just a few lines of code to make converting mixins to ES7 decorators quick and easy. Uses monkey-patching.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timbur/react-mixin-decorator"
+  },
+  "keywords": [
+    "react",
+    "mixin",
+    "mixins",
+    "decorator",
+    "es6",
+    "es7"
+  ],
+  "author": "timbur",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timbur/react-mixin-decorator/issues"
+  },
+  "homepage": "https://github.com/timbur/react-mixin-decorator"
+}
