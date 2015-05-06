@@ -1,27 +1,44 @@
+'use strict';
+
+var React = require('react');
+
 /**
- * Monkey-patches some component to use some mixin's methods.
+ * Returns a created higher-order component based on some mixin's methods.
  *
- * @param {Function} component (technically any function)
+ * @param {ReactComponent} component
  * @param {Object} mixin
- * @return {Function}
+ * @param {Object} transfer Optional object to merge into component's `props`
+ * @return {ReactComponent}
  * @api public
  */
-module.exports = function MixinDecorator (component, mixin) {
-  var prototype = component.prototype;
-  var keys = Object.keys(mixin);
+module.exports = function MixinDecorator (component, mixin, transfer) {
+  mixin.render = function () {
+    return React.createElement(component, getProps.call(this, transfer));
+  };
+  return React.createElement(React.createClass(mixin));
+}
 
-  keys.forEach(function (key) {
-    var original = prototype[key];
+/**
+ * Gets the `props` to be passed to the component.
+ *
+ * @param {Object} transfer Optional
+ * @return {Object}
+ * @api private
+ */
+function getProps (transfer) {
+  var props = {};
 
-    if (typeof mixin[key] === 'function') {
-      prototype[key] = function () {
-        if (typeof original === 'function') {
-          original.apply(this, arguments);
-        }
-        return mixin[key].apply(this, arguments);
-      };
+  [this.props, this.state, transfer].forEach(function (obj) {
+    if (obj) {
+      for (var key in obj) {
+        var value = obj[key];
+
+        props[key] = typeof value === 'function'
+          ? value.bind(this)
+          : value;
+      }
     }
-  });
+  }.bind(this));
 
-  return component;
+  return props;
 }
