@@ -8,8 +8,9 @@
  */
 module.exports = function MixinDecorator (component, mixin) {
   var prototype = component.prototype;
+  var keys = Object.keys(mixin);
 
-  for (var key in mixin) {
+  keys.forEach(function (key) {
     var original = prototype[key];
 
     if (typeof mixin[key] === 'function') {
@@ -20,7 +21,7 @@ module.exports = function MixinDecorator (component, mixin) {
         return mixin[key].apply(this, arguments);
       };
     }
-  }
+  });
 
   return component;
 }
