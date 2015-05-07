@@ -16,8 +16,8 @@ const IGNORE = {
  * @api public
  */
 export default function MixinDecorator (displayName, mixin, defaultProps) {
-  const keys = Object
-    .keys(mixin)
+  const getInitialState = mixin.getInitialState;
+  const keys = Object.keys(mixin)
     .filter(function (key) {
       return !IGNORE[key];
     });
@@ -29,6 +29,9 @@ export default function MixinDecorator (displayName, mixin, defaultProps) {
     constructor(props) {
       super(props);
 
+      if (getInitialState) {
+        this.state = getInitialState.call(this);
+      }
       keys.forEach(function (key) {
         this[key] = mixin[key];
       }.bind(this));

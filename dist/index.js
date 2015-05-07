@@ -37,6 +37,7 @@ var IGNORE = {
   propTypes: true
 };
 function MixinDecorator(displayName, mixin, defaultProps) {
+  var getInitialState = mixin.getInitialState;
   var keys = Object.keys(mixin).filter(function (key) {
     return !IGNORE[key];
   });
@@ -48,6 +49,9 @@ function MixinDecorator(displayName, mixin, defaultProps) {
 
         _get(Object.getPrototypeOf(_class.prototype), 'constructor', this).call(this, props);
 
+        if (getInitialState) {
+          this.state = getInitialState.call(this);
+        }
         keys.forEach((function (key) {
           this[key] = mixin[key];
         }).bind(this));
