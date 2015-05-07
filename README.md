@@ -11,9 +11,9 @@ import React from 'react';
 import MixinDecorator from 'react-mixin-decorator';
 
 export default function SomeDecorator (component) {
-  return MixinDecorator(component, mixin, {...});
+  return MixinDecorator(mixin, {...});
   // Creates and returns a higher-order component based on the mixin's methods.
-  // Third argument is optional and will be passed to the component as props.
+  // Second argument is optional and will be passed to the component as props.
   // Any functions will be bound to the higher-order component.
 }
 

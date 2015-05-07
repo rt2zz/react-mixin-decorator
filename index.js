@@ -1,21 +1,42 @@
-'use strict';
+import React from 'react';
 
-var React = require('react');
+const IGNORE = {
+  getInitialState: true,
+  getDefaultProps: true,
+  propTypes: true
+};
 
 /**
- * Returns a created higher-order component based on some mixin's methods.
+ * Returns a higher-order component based on some mixin's methods.
  *
- * @param {ReactComponent} component
+ * @param {String} displayName looks nice in inspector with `react-devtools`
  * @param {Object} mixin
  * @param {Object} transfer Optional object to merge into component's `props`
- * @return {ReactComponent}
+ * @return {Function}
  * @api public
  */
-module.exports = function MixinDecorator (component, mixin, transfer) {
-  mixin.render = function () {
-    return React.createElement(component, getProps.call(this, transfer));
-  };
-  return React.createElement(React.createClass(mixin));
+export default function MixinDecorator (displayName, mixin, transfer) {
+  const keys = Object
+    .keys(mixin)
+    .filter(function (key) {
+      return !IGNORE[key];
+    });
+
+  const HOC = Component => class extends React.Component {
+    static displayName = displayName
+
+    render() {
+      const props = getProps.call(this, transfer);
+      return <Component {...props} />;
+    }
+  }
+
+  HOC.mixin = mixin;
+  keys.forEach(function (key) {
+    HOC.prototype[key] = mixin[key];
+  });
+
+  return HOC;
 }
 
 /**
@@ -26,12 +47,12 @@ module.exports = function MixinDecorator (component, mixin, transfer) {
  * @api private
  */
 function getProps (transfer) {
-  var props = {};
+  const props = {};
 
   [this.props, this.state, transfer].forEach(function (obj) {
     if (obj) {
-      for (var key in obj) {
-        var value = obj[key];
+      for (let key in obj) {
+        let value = obj[key];
 
         props[key] = typeof value === 'function'
           ? value.bind(this)
