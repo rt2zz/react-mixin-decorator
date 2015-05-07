@@ -11,11 +11,11 @@ const IGNORE = {
  *
  * @param {String} displayName looks nice in inspector with `react-devtools`
  * @param {Object} mixin
- * @param {Object} transfer Optional object to merge into component's `props`
+ * @param {Object} defaultProps Optional
  * @return {Function}
  * @api public
  */
-export default function MixinDecorator (displayName, mixin, transfer) {
+export default function MixinDecorator (displayName, mixin, defaultProps) {
   const keys = Object
     .keys(mixin)
     .filter(function (key) {
@@ -24,32 +24,36 @@ export default function MixinDecorator (displayName, mixin, transfer) {
 
   const HOC = Component => class extends React.Component {
     static displayName = displayName
+    static defaultProps = defaultProps
 
+    constructor(props) {
+      super(props);
+
+      keys.forEach(function (key) {
+        this[key] = mixin[key];
+      }.bind(this));
+    }
     render() {
-      const props = getProps.call(this, transfer);
+      const props = getProps.call(this);
       return <Component {...props} />;
     }
   }
 
   HOC.mixin = mixin;
-  keys.forEach(function (key) {
-    HOC.prototype[key] = mixin[key];
-  });
-
   return HOC;
 }
 
 /**
- * Gets the `props` to be passed to the component.
+ * Gets the `props` and `state` to be passed to the component (as `props`).
+ * Functions are bound to the higher-order component.
  *
- * @param {Object} transfer Optional
  * @return {Object}
  * @api private
  */
-function getProps (transfer) {
+function getProps () {
   const props = {};
 
-  [this.props, this.state, transfer].forEach(function (obj) {
+  [this.props, this.state].forEach(function (obj) {
     if (obj) {
       for (let key in obj) {
         let value = obj[key];
