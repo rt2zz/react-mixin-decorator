@@ -10,11 +10,13 @@ Just a few lines of code to make converting mixins to ES7 decorators as higher-o
 import React from 'react';
 import MixinDecorator from 'react-mixin-decorator';
 
-export default function SomeDecorator (component) {
-  return MixinDecorator(mixin, {...});
+export default function SomeDecorator (defaultProps) {
+  return MixinDecorator('UsesSomeDecorator', mixin, defaultProps);
   // Creates and returns a higher-order component based on the mixin's methods.
-  // Second argument is optional and will be passed to the component as props.
-  // Any functions will be bound to the higher-order component.
+  // Third argument is optional and will become the higher-order 
+  // component's defaultProps, eventually transferred to the decorated 
+  // component, along with its state. Any functions will be bound to the 
+  // higher-order component.
 }
 
 export const mixin = {
@@ -34,7 +36,7 @@ export const mixin = {
     console.log('WOO COME ON!');
   },
   mouseleave() {
-    console.log('YEAH. WOO.');
+    console.log('YEAH. '+this.props.YEAH);
   }
 };
 ```
@@ -44,11 +46,11 @@ export const mixin = {
 import React from 'react';
 import WooComeOn from 'woo-come-on';
 
-@WooComeOn
+@WooComeOn({YEAH: 'WOO!'})
 export default class SomeComponent extends React.Component {
   render() {
     return (
-      <div>HIGH FIVE ME BRO</div>
+      <div title={this.props.YEAH}>HIGH FIVE ME BRO</div>
     );
   }
 }
