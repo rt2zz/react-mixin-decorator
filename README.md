@@ -5,10 +5,16 @@ Just a few lines of code to make converting mixins to ES7 decorators as higher-o
 `npm install react-mixin-decorator --save`
 
 ```
-@param {String} displayName looks nice in inspector with `react-devtools`, wrapped around the decorated component
-@param {Object} mixin
-@param {Object} defaultProps Optional
-@return {Function}
+/**
+ * Returns a higher-order component based on some mixin's methods.
+ *
+ * @param {String} displayName looks nice in inspector with `react-devtools`
+ * @param {Object} mixin
+ * @param {Object} defaultProps Optional
+ * @return {Function}
+ * @api public
+ */
+export default function MixinDecorator (displayName, mixin, defaultProps)
  ```
 This creates and returns a higher-order component based on the mixin's methods.  The third argument is optional and will become the higher-order component's `defaultProps`, eventually transferred to the decorated component, along with its state. Any functions passed within `defaultProps` will be bound to the higher-order component.  The decorated component can access the HOC's exposed properties/methods via `this.props`.
 
