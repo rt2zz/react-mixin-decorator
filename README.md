@@ -18,6 +18,8 @@ export default function MixinDecorator (displayName, mixin, defaultProps)
  ```
 This creates and returns a higher-order component based on the mixin's methods.  The third argument is optional and will become the higher-order component's `defaultProps`, eventually transferred to the decorated component, along with its state. Any functions passed within `defaultProps` will be bound to the higher-order component.  The decorated component can access the HOC's exposed properties/methods via `this.props`.
 
+Disclaimer: Not every mixin can be converted to a HOC with this, but most should.
+
 ```js
 // woo-come-on.js
 
