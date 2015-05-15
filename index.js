@@ -9,7 +9,7 @@ const IGNORE = {
 /**
  * Returns a higher-order component based on some mixin's methods.
  *
- * @param {String} displayName looks nice in inspector with `react-devtools`
+ * @param {String} displayName looks nice in inspector with `react-devtools`, wrapped around the component
  * @param {Object} mixin
  * @param {Object} defaultProps Optional
  * @return {Function}
