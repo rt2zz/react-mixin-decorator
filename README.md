@@ -33,15 +33,17 @@ export default function SomeDecorator (defaultProps) {
 export const mixin = {
   componentDidMount() {
     const el = React.findDOMNode(this);
-
-    el.addEventListener('mouseenter', this.mouseenter.bind(this), false);
-    el.addEventListener('mouseleave', this.mouseleave.bind(this), false);
+    
+    this.mouseenter = this.mouseenter.bind(this);
+    this.mouseleave = this.mouseleave.bind(this);
+    el.addEventListener('mouseenter', this.mouseenter, false);
+    el.addEventListener('mouseleave', this.mouseleave, false);
   },
   componentWillUnmount() {
     const el = React.findDOMNode(this);
 
-    el.removeEventListener('mouseenter', this.mouseenter.bind(this));
-    el.removeEventListener('mouseleave', this.mouseleave.bind(this));
+    el.removeEventListener('mouseenter', this.mouseenter);
+    el.removeEventListener('mouseleave', this.mouseleave);
   },
   mouseenter() {
     console.log('WOO COME ON!');
