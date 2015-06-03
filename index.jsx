@@ -22,7 +22,7 @@ export default function MixinDecorator (displayName, mixin, defaultProps) {
       return !IGNORE[key];
     });
 
-  const HOC = Component => class extends React.Component {
+  const HOC = (Component) => class extends React.Component {
     static displayName = displayName
     static defaultProps = defaultProps
 
@@ -32,9 +32,9 @@ export default function MixinDecorator (displayName, mixin, defaultProps) {
       if (getInitialState) {
         this.state = getInitialState.call(this);
       }
-      keys.forEach(function (key) {
+      keys.forEach((key) => {
         this[key] = mixin[key];
-      }.bind(this));
+      });
     }
     render() {
       const props = getProps.call(this);
@@ -56,7 +56,7 @@ export default function MixinDecorator (displayName, mixin, defaultProps) {
 function getProps () {
   const props = {};
 
-  [this.props, this.state].forEach(function (obj) {
+  [this.props, this.state].forEach((obj) => {
     if (obj) {
       for (let key in obj) {
         let value = obj[key];
@@ -66,7 +66,7 @@ function getProps () {
           : value;
       }
     }
-  }.bind(this));
+  });
 
   return props;
 }
