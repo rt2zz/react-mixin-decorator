@@ -66,7 +66,7 @@ export default function MixinDecorator (
     }
 
     render() {
-      const props = getProps.call(this);
+      const props = getProps.call(this, mixin);
 
       return <Component {...props} />;
     }
