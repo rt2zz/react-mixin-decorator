@@ -1,5 +1,5 @@
 import React from 'react';
-import BothDecoratorAndMixin from 'both-decorator-and-mixin';
+import BothDecoratorAndMixin from './both-decorator-and-mixin';
 
 // as a decorator
 @BothDecoratorAndMixin

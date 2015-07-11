@@ -1,6 +1,6 @@
 import React          from 'react';
 import MixinDecorator from 'react-mixin-decorator';
-import SomeMixin      from 'some-mixin';
+import SomeMixin      from './some-mixin';
 
 const name = 'SomeDecorator';
 const props = {contents: 'yo', controlledByMixin: SomeMixin.controlledByMixin};
