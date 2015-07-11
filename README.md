@@ -1,70 +1,51 @@
 # react-mixin-decorator
-Just a few lines of code to make converting mixins to ES7 decorators as higher-order components quick and easy.
+Quickly convert mixins to ES7 decorators as higher-order components and/or create decorators that can easily double as mixins.
+
+## Why?
+Because as a good developer, you like to maximize code reuse.  If you're creating React components using ES6 classes and you'd like to use existing mixins to add some nice functionality to your component, you probably don't want to take the time to convert the mixins to something that your ES6 React component class could use.
+
+Or maybe you're creating a decorator and you want an extremely easy way to offer the same functionality to folks using `React.createClass`.
+
+## Installation
+`npm install react-mixin-decorator`
 
 ## Usage
-`npm install react-mixin-decorator --save`
-
-```
-/**
- * Returns a higher-order component based on some mixin's methods.
- *
- * @param {String} displayName looks nice in inspector with `react-devtools`, wrapped around the component
- * @param {Object} mixin
- * @param {Object} defaultProps Optional
- * @return {Function}
- * @api public
- */
-export default function MixinDecorator (displayName, mixin, defaultProps)
- ```
-This creates and returns a higher-order component based on the mixin's methods.  The third argument is optional and will become the higher-order component's `defaultProps`, eventually transferred to the decorated component, along with its state. Any functions passed within `defaultProps` will be bound to the higher-order component.  The decorated component can access the HOC's exposed properties/methods via `this.props`.
-
-Disclaimer: Not every mixin can be converted to a HOC with this.
-
 ```js
-// woo-come-on.js
-
-import React from 'react';
+import React          from 'react';
 import MixinDecorator from 'react-mixin-decorator';
+import SomeMixin      from 'some-mixin';
 
-export default function SomeDecorator (defaultProps) {
-  return MixinDecorator('UsesSomeDecorator', mixin, defaultProps);
-}
+const defaultProps  = {...};
+const autoBind      = [...];
+const SomeDecorator = MixinDecorator(
+  'SomeDecorator',  // displayName
+  SomeMixin,
+  defaultProps,     // optional
+  autoBind          // optional
+);
 
-export const mixin = {
-  componentDidMount() {
-    const el = React.findDOMNode(this);
-    
-    this.mouseenter = this.mouseenter.bind(this);
-    this.mouseleave = this.mouseleave.bind(this);
-    el.addEventListener('mouseenter', this.mouseenter, false);
-    el.addEventListener('mouseleave', this.mouseleave, false);
-  },
-  componentWillUnmount() {
-    const el = React.findDOMNode(this);
-
-    el.removeEventListener('mouseenter', this.mouseenter);
-    el.removeEventListener('mouseleave', this.mouseleave);
-  },
-  mouseenter() {
-    console.log('WOO COME ON!');
-  },
-  mouseleave() {
-    console.log('YEAH. '+this.props.YEAH);
-  }
-};
-```
-```js
-// some-component.js
-
-import React from 'react';
-import WooComeOn from 'woo-come-on';
-
-@WooComeOn({YEAH: 'WOO!'})
-export default class SomeComponent extends React.Component {
-  render() {
-    return (
-      <div title={this.props.YEAH}>HIGH FIVE ME BRO</div>
-    );
-  }
+@SomeDecorator
+export default class Example extends React.Component {
+  // etc.
 }
 ```
+
+The generated decorator's `props` and `state` are passed to the decorated component's `props`.
+
+If you want to pass any of the mixin's methods to the decorated component, pass them within the `defaultProps` argument with the same key, and each method will be auto-bound to the higher-order component.  The decorated component can then access the method via `this.props.someMixinMethod`.
+
+You may also provide an array of methods that you know need to be auto-bound.
+
+## Example: Mixin -> Decorator
+See [`example.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/example.jsx) and [`some-mixin.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/some-mixin.jsx).
+
+## Example: Both Decorator & Mixin
+See [`example-two.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/example-two.jsx) and [`both-decorator-and-mixin.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/both-decorator-and-mixin.jsx).
+
+## Real World Example
+See [`use-tooltip`](https://github.com/loggur/use-tooltip) for a decorator that adds a tooltip to React components.
+
+## Disclaimer
+Not every mixin can be converted to a higher-order component with this.
+
+## MIT License

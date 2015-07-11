@@ -9,35 +9,65 @@ const IGNORE = {
 /**
  * Returns a higher-order component based on some mixin's methods.
  *
- * @param {String} displayName looks nice in inspector with `react-devtools`, wrapped around the component
+ * @param {String} displayName for the higher-order component
  * @param {Object} mixin
  * @param {Object} defaultProps Optional
+ * @param {Array} autoBind Optional the mixin may need some methods auto-bound
  * @return {Function}
  * @api public
  */
-export default function MixinDecorator (displayName, mixin, defaultProps) {
+export default function MixinDecorator (
+  displayName,
+  mixin,
+  defaultProps,
+  autoBind
+) {
+  const getDefaultProps = mixin.getDefaultProps;
   const getInitialState = mixin.getInitialState;
+  const propTypes       = mixin.propTypes;
+
   const keys = Object.keys(mixin)
-    .filter(function (key) {
+    .filter((key) => {
       return !IGNORE[key];
     });
 
+  if (Array.isArray(defaultProps)) {
+    autoBind = defaultProps;
+    defaultProps = {};
+  }
+
   const HOC = (Component) => class extends React.Component {
-    static displayName = displayName
+    static displayName  = displayName
     static defaultProps = defaultProps
+    static propTypes    = propTypes
 
     constructor(props) {
       super(props);
 
-      if (getInitialState) {
-        this.state = getInitialState.call(this);
-      }
       keys.forEach((key) => {
         this[key] = mixin[key];
       });
+
+      if (Array.isArray(autoBind)) {
+        autoBind.forEach((method) => {
+          this[key] = this[key].bind(this);
+        });
+      }
+
+      if (getDefaultProps) {
+        addDefaultProps(props, getDefaultProps.call(this));
+      }
+
+      if (getInitialState) {
+        this.state = getInitialState.call(this);
+      } else {
+        this.state = {};  // just in case
+      }
     }
+
     render() {
       const props = getProps.call(this);
+
       return <Component {...props} />;
     }
   }
@@ -47,13 +77,31 @@ export default function MixinDecorator (displayName, mixin, defaultProps) {
 }
 
 /**
- * Gets the `props` and `state` to be passed to the component (as `props`).
- * Functions are bound to the higher-order component.
+ * Adds `mixin.getDefaultProps()` values to the actual `props` if undefined.
  *
+ * @param {Object} props
+ * @param {Object} mixinDefaultProps
+ * @api private
+ */
+function addDefaultProps (props, mixinDefaultProps) {
+  if (mixinDefaultProps) {
+    for (let key in mixinDefaultProps) {
+      if (props[key] === undefined) {
+        props[key] = mixinDefaultProps[key];
+      }
+    } 
+  }
+}
+
+/**
+ * Gets the `props` and `state` to be passed to the component (as `props`).
+ * Mixin methods are bound to the higher-order component.
+ *
+ * @param {Object} mixin
  * @return {Object}
  * @api private
  */
-function getProps () {
+function getProps (mixin) {
   const props = {};
 
   [this.props, this.state].forEach((obj) => {
@@ -61,7 +109,7 @@ function getProps () {
       for (let key in obj) {
         let value = obj[key];
 
-        props[key] = typeof value === 'function'
+        props[key] = typeof value === 'function' && value === mixin[key]
           ? value.bind(this)
           : value;
       }
