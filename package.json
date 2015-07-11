@@ -1,6 +1,6 @@
 {
   "name": "react-mixin-decorator",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Just a few lines of code to make converting mixins to ES7 decorators as higher-order components quick and easy.",
   "main": "index.jsx",
   "scripts": {
