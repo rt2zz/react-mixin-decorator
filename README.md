@@ -9,6 +9,8 @@ Or maybe you're creating a decorator and you want an extremely easy way to offer
 ## Installation
 `npm install react-mixin-decorator`
 
+You should also of course be using ES6/ES7.  If by some chance you're reading this and aren't aware of [`Babel`](https://babeljs.io), check it out.
+
 ## Usage
 ```js
 import React          from 'react';
