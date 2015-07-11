@@ -39,10 +39,10 @@ If you want to pass any of the mixin's methods to the decorated component, pass 
 You may also provide an array of methods that you know need to be auto-bound.
 
 ## Example: Mixin -> Decorator
-See [`example.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/example.jsx) and [`some-mixin.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/some-mixin.jsx).
+See [`example.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/example.jsx) and [`some-mixin.js`](https://github.com/timbur/react-mixin-decorator/blob/master/example/some-mixin.js).
 
 ## Example: Both Decorator & Mixin
-See [`example-two.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/example-two.jsx) and [`both-decorator-and-mixin.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/both-decorator-and-mixin.jsx).
+See [`example-two.jsx`](https://github.com/timbur/react-mixin-decorator/blob/master/example/example-two.jsx) and [`both-decorator-and-mixin.js`](https://github.com/timbur/react-mixin-decorator/blob/master/example/both-decorator-and-mixin.js).
 
 ## Real World Example
 See [`use-tooltip`](https://github.com/loggur/use-tooltip) for a decorator that adds a tooltip to React components.
