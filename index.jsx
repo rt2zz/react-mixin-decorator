@@ -50,7 +50,7 @@ export default function MixinDecorator (
 
       if (Array.isArray(autoBind)) {
         autoBind.forEach((method) => {
-          this[key] = this[key].bind(this);
+          this[method] = this[method].bind(this);
         });
       }
 
