@@ -7,7 +7,13 @@ Because as a good developer, you like to maximize code reuse.  If you're creatin
 Or maybe you're creating a decorator and you want an extremely easy way to offer the same functionality to folks using `React.createClass`.
 
 ## Installation
-`npm install react-mixin-decorator`
+```
+npm install react-mixin-decorator
+```
+or
+```
+jspm install react-mixin-decorator=github:timbur/react-mixin-decorator@1.1.2
+```
 
 You should also of course be using ES6/ES7.  If by some chance you're reading this and aren't aware of [`Babel`](https://babeljs.io), check it out.
 
