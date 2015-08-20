@@ -2,9 +2,10 @@
   "name": "react-mixin-decorator",
   "version": "1.1.2",
   "description": "Just a few lines of code to make converting mixins to ES7 decorators as higher-order components quick and easy.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel --stage 0 index.jsx > dist/index.js",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

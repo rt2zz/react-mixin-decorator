@@ -37,9 +37,9 @@ export default function MixinDecorator (
   }
 
   const HOC = (Component) => class extends React.Component {
-    static displayName  = displayName
-    static defaultProps = defaultProps
-    static propTypes    = propTypes
+    static displayName  = displayName;
+    static defaultProps = defaultProps;
+    static propTypes    = propTypes;
 
     constructor(props) {
       super(props);
