@@ -21,7 +21,7 @@ export default MixinDecorator(
     },
 
     componentWillUnmount: function () {
-      const = React.findDOMNode(this);
+      const el = React.findDOMNode(this);
 
       el.removeEventListener('mouseenter', this.mouseenter);
       el.removeEventListener('mouseleave', this.mouseleave);
@@ -47,4 +47,4 @@ export default MixinDecorator(
     'mouseenter',
     'mouseleave'
   ]
-};
+);
